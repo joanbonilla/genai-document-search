@@ -2,6 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+COPY modules/* ./
 COPY Pipfile Pipfile.lock ./
 
 RUN python -m pip install --upgrade pip
