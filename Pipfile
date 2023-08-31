@@ -10,10 +10,10 @@ gitpython = "*"
 streamlit-chat = "*"
 streamlit-extras = "*"
 google-generativeai = "*"
-openai = "*"
 tiktoken = "*"
 google-cloud-aiplatform = "*"
 chromadb = "*"
+PyPDF2 = "*"
 
 [dev-packages]
 
