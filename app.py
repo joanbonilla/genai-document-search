@@ -40,6 +40,8 @@ def generate_response(uploaded_file, question):
         # Split documents into chunks
         text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         texts = text_splitter.create_documents(documents)
+        print(f"# of documents = {len(texts)}")
+     
         # Select embeddings
         embeddings = GoogleEmbeddings()
         # Select LLM
@@ -79,7 +81,7 @@ def generate_response(uploaded_file, question):
         qa.combine_documents_chain.llm_chain.verbose = True
         qa.combine_documents_chain.llm_chain.llm.verbose = True
 
-        return qa({'query': question})
+        return qa.run(question)
 
 # Page title
 st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and Langchain')
