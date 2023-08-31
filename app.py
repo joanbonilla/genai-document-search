@@ -38,14 +38,14 @@ def generate_response(uploaded_file, question):
 
     if uploaded_file is not None:
         #documents = [uploaded_file.read().decode()]
-        pdf_reader = PdfReader(pdf)
+        pdf_reader = PdfReader(uploaded_file)
         text = ""
         for page in pdf_reader.pages:
             text += page.extract_text()
           
         # Split documents into chunks
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-        texts = text_splitter.create_documents(documents)
+        texts = text_splitter.create_documents(text)
         print(f"# of documents = {len(texts)}")
      
         # Select embeddings
