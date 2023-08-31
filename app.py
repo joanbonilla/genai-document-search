@@ -44,7 +44,7 @@ def generate_response(uploaded_file, question):
             text += page.extract_text()
           
         # Split documents into chunks
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
         texts = text_splitter.create_documents(text)
         print(f"# of documents = {len(texts)}")
      
