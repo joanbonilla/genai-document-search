@@ -17,8 +17,6 @@ from GoogleEmbeddings import GoogleEmbeddings
 
 def generate_response(uploaded_file, query_text):
 
-    langchain.debug = True
-
     if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
         # Split documents into chunks
@@ -28,18 +26,26 @@ def generate_response(uploaded_file, query_text):
         embeddings = GoogleEmbeddings()
         # Select LLM
         llm = VertexAI(
-            max_output_tokens=256,
+            model_name="text-bison@001",
+            max_output_tokens=1024,
             temperature=0.2,
             top_p=0.8,
             top_k=40,
             verbose=True,
-        )
+            )
         # Create a vectorstore from documents
         db = Chroma.from_documents(texts, embeddings)
         # Create retriever interface
         retriever = db.as_retriever()
         # Create QA chain
-        qa = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=retriever)
+        qa = RetrievalQA.from_chain_type(
+            llm=llm,
+            chain_type='stuff',
+            retriever=retriever,
+            return_source_documents=True,
+            verbose=True,
+            )
+
         return qa.run(query_text)
 
 # Page title
