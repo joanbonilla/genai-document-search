@@ -31,7 +31,7 @@ def generate_response(uploaded_file, query_text):
             temperature=0.2,
             top_p=0.8,
             top_k=40,
-            verbose=True,
+            verbose=True
             )
         # Create a vectorstore from documents
         db = Chroma.from_documents(texts, embeddings)
@@ -43,7 +43,7 @@ def generate_response(uploaded_file, query_text):
             chain_type='stuff',
             retriever=retriever,
             return_source_documents=True,
-            verbose=True,
+            verbose=True
             )
 
         return qa.run(query_text)
