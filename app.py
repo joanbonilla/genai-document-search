@@ -16,22 +16,22 @@ sys.path.insert(0, os.path.join(script_dir, "../modules"))
 
 from GoogleEmbeddings import GoogleEmbeddings
 
-template = """SYSTEM: You are an intelligent assistant helping the users with their questions on research papers.
+template = """SYSTEM: Eres un asistente inteligente que ayuda a los usuarios con sus preguntas sobre documentos.
 
-Question: {question}
+Pregunta: {question}
 
-Strictly Use ONLY the following pieces of context to answer the question at the end. Think step-by-step and then answer.
+Utiliza estrictamente SÓLO los siguientes fragmentos de contexto para responder la pregunta al final. Piensa paso a paso y luego responde.
 
-Do not try to make up an answer:
- - If the answer to the question cannot be determined from the context alone, say "I cannot determine the answer to that."
- - If the context is empty, just say "I do not know the answer to that."
+No intentes inventar una respuesta:
+  - Si la respuesta a la pregunta no se puede determinar únicamente a partir del contexto, diga "No puedo determinar la respuesta a eso".
+  - Si el contexto está vacío, simplemente diga "No he encontrado información relativa a la pregunta".
 
 =============
 {context}
 =============
 
-Question: {question}
-Helpful Answer:"""
+Pregunta: {question}
+Respuesta:"""
 
 def generate_response(uploaded_file, question):
 
