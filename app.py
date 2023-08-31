@@ -4,6 +4,7 @@ import sys
 import streamlit as st
 
 from typing import List, Tuple
+from PyPDF2 import PdfReader
 
 from langchain.llms import VertexAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -36,7 +37,12 @@ Respuesta:"""
 def generate_response(uploaded_file, question):
 
     if uploaded_file is not None:
-        documents = [uploaded_file.read().decode()]
+        #documents = [uploaded_file.read().decode()]
+        pdf_reader = PdfReader(pdf)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+          
         # Split documents into chunks
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         texts = text_splitter.create_documents(documents)
@@ -88,7 +94,7 @@ st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and 
 st.title('🦜🔗 GenAI Document Search with ChromaDB and Langchain')
 
 # File upload
-uploaded_file = st.file_uploader('Sube un documento', type='txt')
+uploaded_file = st.file_uploader('Sube un documento', type='pdf')
 # Query text
 query_text = st.text_input('Pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_file)
 
