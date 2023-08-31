@@ -7,7 +7,6 @@ from typing import List, Tuple
 
 from langchain.llms import VertexAI
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 
@@ -17,6 +16,8 @@ sys.path.insert(0, os.path.join(script_dir, "../modules"))
 from GoogleEmbeddings import GoogleEmbeddings
 
 def generate_response(uploaded_file, query_text):
+
+    langchain.debug = True
 
     if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
@@ -42,13 +43,13 @@ def generate_response(uploaded_file, query_text):
         return qa.run(query_text)
 
 # Page title
-st.set_page_config(page_title='🦜🔗 GenAI Document search with ChromaDB and Langchain')
-st.title('🦜🔗 GenAI Document search with ChromaDB and Langchain')
+st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and Langchain')
+st.title('🦜🔗 GenAI Document Search with ChromaDB and Langchain')
 
 # File upload
-uploaded_file = st.file_uploader('Sube un artículo', type='txt')
+uploaded_file = st.file_uploader('Sube un documento', type='txt')
 # Query text
-query_text = st.text_input('Escribe la pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_file)
+query_text = st.text_input('Pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_file)
 
 # Form input and query
 result = []
