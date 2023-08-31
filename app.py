@@ -42,24 +42,22 @@ def generate_response(uploaded_file, query_text):
         return qa.run(query_text)
 
 # Page title
-st.set_page_config(page_title='🦜🔗 Ask the Doc App')
-st.title('🦜🔗 Ask the Doc App')
+st.set_page_config(page_title='🦜🔗 GenAI Document search with ChromaDB and Langchain')
+st.title('🦜🔗 GenAI Document search with ChromaDB and Langchain')
 
 # File upload
-uploaded_file = st.file_uploader('Upload an article', type='txt')
+uploaded_file = st.file_uploader('Sube un artículo', type='txt')
 # Query text
-query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=not uploaded_file)
+query_text = st.text_input('Escribe la pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_file)
 
 # Form input and query
 result = []
 with st.form('myform', clear_on_submit=True):
-    openai_api_key = st.text_input('OpenAI API Key', type='password', disabled=not (uploaded_file and query_text))
     submitted = st.form_submit_button('Submit', disabled=not(uploaded_file and query_text))
-    if submitted and openai_api_key.startswith('sk-'):
+    if submitted:
         with st.spinner('Calculating...'):
             response = generate_response(uploaded_file, query_text)
             result.append(response)
-            del openai_api_key
 
 if len(result):
     st.info(response)
