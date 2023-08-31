@@ -42,7 +42,6 @@ def generate_response(uploaded_file, query_text):
             llm=llm,
             chain_type='stuff',
             retriever=retriever,
-            return_source_documents=True,
             verbose=True
             )
 
