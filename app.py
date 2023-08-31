@@ -6,7 +6,7 @@ import streamlit as st
 from typing import List, Tuple
 
 from langchain.llms import VertexAI
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -38,7 +38,7 @@ def generate_response(uploaded_file, question):
     if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
         # Split documents into chunks
-        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         texts = text_splitter.create_documents(documents)
         print(f"# of documents = {len(texts)}")
      
