@@ -15,7 +15,24 @@ sys.path.insert(0, os.path.join(script_dir, "../modules"))
 
 from GoogleEmbeddings import GoogleEmbeddings
 
-def generate_response(uploaded_file, query_text):
+template = """SYSTEM: You are an intelligent assistant helping the users with their questions on research papers.
+
+Question: {question}
+
+Strictly Use ONLY the following pieces of context to answer the question at the end. Think step-by-step and then answer.
+
+Do not try to make up an answer:
+ - If the answer to the question cannot be determined from the context alone, say "I cannot determine the answer to that."
+ - If the context is empty, just say "I do not know the answer to that."
+
+=============
+{context}
+=============
+
+Question: {question}
+Helpful Answer:"""
+
+def generate_response(uploaded_file, question):
 
     if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
@@ -36,13 +53,25 @@ def generate_response(uploaded_file, query_text):
         # Create a vectorstore from documents
         db = Chroma.from_documents(texts, embeddings)
         # Create retriever interface
-        retriever = db.as_retriever()
+        retriever = db.as_retriever(
+            search_type="similarity",
+            search_kwargs={
+                "k": 3,
+                "search_distance": 0.7,
+            },
+        )
         # Create QA chain
         qa = RetrievalQA.from_chain_type(
             llm=llm,
             chain_type='stuff',
             retriever=retriever,
-            verbose=True
+            verbose=True,
+            chain_type_kwargs={
+                "prompt": PromptTemplate(
+                    template=template,
+                    input_variables=["context", "question"],
+                    ),
+                }
             )
 
         return qa.run(query_text)
