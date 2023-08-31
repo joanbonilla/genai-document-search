@@ -57,7 +57,7 @@ def generate_response(uploaded_file, question):
         retriever = db.as_retriever(
             search_type="similarity",
             search_kwargs={
-                "k": 3,
+                "k": 1,
                 "search_distance": 0.7,
             },
         )
