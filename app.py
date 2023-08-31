@@ -9,6 +9,7 @@ from langchain.llms import VertexAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, os.path.join(script_dir, "../modules"))
@@ -73,6 +74,10 @@ def generate_response(uploaded_file, question):
                     ),
                 }
             )
+
+        qa.combine_documents_chain.verbose = True
+        qa.combine_documents_chain.llm_chain.verbose = True
+        qa.combine_documents_chain.llm_chain.llm.verbose = True
 
         return qa.run(query_text)
 
