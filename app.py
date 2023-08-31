@@ -79,7 +79,7 @@ def generate_response(uploaded_file, question):
         qa.combine_documents_chain.llm_chain.verbose = True
         qa.combine_documents_chain.llm_chain.llm.verbose = True
 
-        return qa.run(question)
+        return qa({'query': question})
 
 # Page title
 st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and Langchain')
