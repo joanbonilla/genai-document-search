@@ -76,7 +76,7 @@ def generate_response(uploaded_files, question):
             search_type="similarity",
             search_kwargs={
                 "k": 1,
-                "search_distance": 0.7,
+                "search_distance": 0.5,
             },
         )
         # Create QA chain
