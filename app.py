@@ -35,9 +35,9 @@ No intentes inventar una respuesta:
 Pregunta: {question}
 Respuesta:"""
 
-def generate_response(uploaded_file, question):
+def generate_response(uploaded_files, question):
 
-    if uploaded_file is not None:
+    if uploaded_files is not None:
         #documents = [uploaded_file.read().decode()]
         #pdf_reader = PyPDFLoader(uploaded_file)
         #text = ""
@@ -46,11 +46,12 @@ def generate_response(uploaded_file, question):
 
         docs = []
         temp_dir = tempfile.TemporaryDirectory()
-        temp_filepath = os.path.join(temp_dir.name, uploaded_file.name)
-        with open(temp_filepath, "wb") as f:
-            f.write(uploaded_file.getvalue())
-        loader = PyPDFLoader(temp_filepath)
-        docs.extend(loader.load())
+        for file in uploaded_files:
+            temp_filepath = os.path.join(temp_dir.name, file.name)
+            with open(temp_filepath, "wb") as f:
+                f.write(file.getvalue())
+            loader = PyPDFLoader(temp_filepath)
+            docs.extend(loader.load())
       
         # Split documents into chunks
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
@@ -103,17 +104,17 @@ st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and 
 st.title('🦜🔗 GenAI Document Search with ChromaDB and Langchain')
 
 # File upload
-uploaded_file = st.file_uploader('Sube un documento', type='pdf')
+uploaded_files = st.file_uploader('Sube un documento', type='pdf', accept_multiple_files=True)
 # Query text
-query_text = st.text_input('Pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_file)
+query_text = st.text_input('Pregunta:', placeholder = 'Proporciona un resumen...', disabled=not uploaded_files)
 
 # Form input and query
 result = []
 with st.form('myform', clear_on_submit=True):
-    submitted = st.form_submit_button('Submit', disabled=not(uploaded_file and query_text))
+    submitted = st.form_submit_button('Submit', disabled=not(uploaded_files and query_text))
     if submitted:
         with st.spinner('Calculating...'):
-            response = generate_response(uploaded_file, query_text)
+            response = generate_response(uploaded_files, query_text)
             result.append(response)
 
 if len(result):
