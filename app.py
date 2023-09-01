@@ -100,8 +100,8 @@ def generate_response(uploaded_files, question):
         return qa.run(question)
 
 # Page title
-st.set_page_config(page_title='🦜🔗 GenAI Document Search with ChromaDB and Langchain')
-st.title('🦜🔗 GenAI Document Search with ChromaDB and Langchain')
+st.set_page_config(page_title='🦜🔗 GenAI Document Search with PaLM2, Langchain and ChromaDB')
+st.title('🦜🔗 GenAI Document Search with PaLM2, Langchain and ChromaDB')
 
 # File upload
 uploaded_files = st.file_uploader('Sube un documento', type='pdf', accept_multiple_files=True)
