@@ -48,7 +48,7 @@ def generate_response(uploaded_file, question):
         temp_dir = tempfile.TemporaryDirectory()
         temp_filepath = os.path.join(temp_dir.name, uploaded_file.name)
         with open(temp_filepath, "wb") as f:
-            f.write(file.getvalue())
+            f.write(uploaded_file.getvalue())
         loader = PyPDFLoader(temp_filepath)
         docs.extend(loader.load())
       
