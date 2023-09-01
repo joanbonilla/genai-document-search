@@ -1,11 +1,12 @@
 import os
 import sys
-import sys
+import tempfile
 import streamlit as st
 
 from typing import List, Tuple
 from PyPDF2 import PdfReader
 
+from langchain.document_loaders import PyPDFLoader
 from langchain.llms import VertexAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
@@ -38,14 +39,22 @@ def generate_response(uploaded_file, question):
 
     if uploaded_file is not None:
         #documents = [uploaded_file.read().decode()]
-        pdf_reader = PdfReader(uploaded_file)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text()
-          
+        #pdf_reader = PyPDFLoader(uploaded_file)
+        #text = ""
+        #for page in pdf_reader.pages:
+        #    text += page.extract_text()
+
+        docs = []
+        temp_dir = tempfile.TemporaryDirectory()
+        temp_filepath = os.path.join(temp_dir.name, uploaded_file.name)
+        with open(temp_filepath, "wb") as f:
+            f.write(file.getvalue())
+        loader = PyPDFLoader(temp_filepath)
+        docs.extend(loader.load())
+      
         # Split documents into chunks
         text_splitter = CharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
-        texts = text_splitter.create_documents(text)
+        texts = text_splitter.create_documents(docs)
         print(f"# of documents = {len(texts)}")
      
         # Select embeddings
