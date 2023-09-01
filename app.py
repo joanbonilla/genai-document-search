@@ -55,7 +55,7 @@ def generate_response(uploaded_files, question):
       
         # Split documents into chunks
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
-        texts = text_splitter.create_documents(docs)
+        texts = text_splitter.split_documents(docs)
         print(f"# of documents = {len(texts)}")
      
         # Select embeddings
