@@ -7,7 +7,7 @@ from typing import List, Tuple
 from PyPDF2 import PdfReader
 
 from langchain.llms import VertexAI
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -44,7 +44,7 @@ def generate_response(uploaded_file, question):
             text += page.extract_text()
           
         # Split documents into chunks
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
+        text_splitter = CharacterTextSplitter(chunk_size=1500, chunk_overlap=0)
         texts = text_splitter.create_documents(text)
         print(f"# of documents = {len(texts)}")
      
